@@ -1,13 +1,11 @@
 use SugarBt;
 
-use SugarBt;
 
-drop table user;
-drop table bakery
-drop table iceCream
-drop table chocolate
-drop table milk
-drop table fruits
+drop table bakery;
+drop table iceCream;
+drop table chocolate;
+drop table milk;
+drop table fruits;
 
 create table user (
 	user_id INT AUTO_INCREMENT PRIMARY KEY,
