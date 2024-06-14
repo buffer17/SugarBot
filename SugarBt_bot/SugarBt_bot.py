@@ -62,9 +62,9 @@ def callback_worker(call):
             text = str(row[0]) + " - " + str(row[1]) + " г"
             sent = bot.send_message(call.message.chat.id, text)
             prv_messages.append(sent.message_id)
-    elif call.data == "exit":
-        if keyboard_id:
-            bot.delete_message(call.message.chat.id, keyboard_id)
+    # elif call.data == "exit":
+    #     if keyboard_id:
+    #         bot.delete_message(call.message.chat.id, keyboard_id)
 
 
     # Сохраняем изменения и закрываем соединение
@@ -74,10 +74,10 @@ def callback_worker(call):
 @bot.message_handler(content_types=['text'])
 def start(message):
     global keyboard_id
-    if message.text == "/help":
-        bot.send_message(message.from_user.id, "/help - Список функций")
-        bot.send_message(message.from_user.id, "/info - Общая информация")
-    elif message.text == "/info":
+    if message.text == "/start" or message.text == "/info":
+        if message.text == "/start":
+            bot.send_message(message.from_user.id, "Привет, я Sugar Bot!\nЯ расскажу тебе сколько сахара содержится в продуктах и сколько сахара должно быть в организме!\nВыбери категорию из панели ниже и узнай норму сахара для данных продуктов.")
+
         keyboard = types.InlineKeyboardMarkup()  # Клавиатура
         sugarInfo = types.InlineKeyboardButton(text="Норма сахара", callback_data="sugarInfo")
         keyboard.add(sugarInfo)
@@ -91,12 +91,13 @@ def start(message):
         keyboard.add(milk)
         fruits = types.InlineKeyboardButton(text="Фрукты и ягоды", callback_data="fruits")
         keyboard.add(fruits)
-        exit = types.InlineKeyboardButton(text="Назад", callback_data="exit")
-        keyboard.add(exit)
+        # exit = types.InlineKeyboardButton(text="Назад", callback_data="exit")
+        # keyboard.add(exit)
         question = "Выбери категорию"
+
         key = bot.send_message(message.from_user.id, text=str(question), reply_markup=keyboard)
         keyboard_id = key.message_id
     else:
-        bot.send_message(message.from_user.id, 'Неизвестная функция, воспользуйся /help')
+        bot.send_message(message.from_user.id, 'Неизвестная функция\nЧтобы узнать норму сахара введи /start или /info')
 
 bot.polling(none_stop=True, interval=0)
